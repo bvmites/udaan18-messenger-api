@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "id":{
+      "type":"string"
+    },
+    "name":{
+      "type":"string"
+    },
+    "type": {
+      "type":"string"
+    },
+    "department": {
+      "type":"string"
+    },
+    "curruntRound":{
+      "type":"string"
+    },
+    "teamSize":{
+      "type":"string"
+    }
+  },
+  "required":[
+    "id",
+    "name",
+    "type",
+    "department",
+    "curruntRound",
+    "teamSize"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "type":"object",
+  "properties":{
+    "id":{
+      "type":"string"
+    },
+    "name":{
+      "type":"string"
+    },
+    "phone":{
+      "type":"string"
+    },
+    "registrationDate":{
+      "type":"string"
+    },
+    "round":{
+      "type":"integer"
+    },
+    "deliveryStatus":{
+      "type":"string"
+    }
+  },
+  "required":[
+    "id",
+    "name",
+    "phone",
+    "registrationDate",
+    "round",
+    "deliveryStatus"
+  ]
+}
