@@ -1,0 +1,11 @@
+# Node modules
+node_modules
+
+# logs
+*.log
+
+# IDEA
+.idea/
+
+# environment
+.env
