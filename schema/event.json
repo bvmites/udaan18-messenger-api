@@ -1,31 +1,98 @@
 {
   "type": "object",
   "properties": {
-    "id":{
-      "type":"string"
+    "_id": {
+      "type": "string"
     },
-    "name":{
-      "type":"string"
+    "eventName": {
+      "type": "string",
+      "minLength": 1
     },
-    "type": {
-      "type":"string"
+    "eventType": {
+      "type": "string",
+      "minLength": 1
     },
     "department": {
-      "type":"string"
+      "type": "string",
+      "minLength": 1
     },
-    "curruntRound":{
-      "type":"string"
+    "tagline": {
+      "type": "string",
+      "minLength": 1
     },
-    "teamSize":{
-      "type":"string"
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "teamSize": {
+      "type": "number"
+    },
+    "entryFee": {
+      "type": "number"
+    },
+    "prizeMoney": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "managers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "rounds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "participants": {
+      "type":"array",
+      "items": {
+        "type":"object",
+        "properties": {
+          "id": {
+            "type":"string",
+          },
+          "name":{
+            "type":"string"
+          },
+          "phone":{
+            "type":"string",
+          },
+          "round": {
+            "type":"number"
+          },
+          "status":{
+            "type":"string"
+          }
+        }
+      }
     }
   },
-  "required":[
-    "id",
-    "name",
-    "type",
+  "required": [
+    "_id",
+    "eventName",
+    "eventType",
     "department",
-    "curruntRound",
-    "teamSize"
+    "tagline",
+    "description",
+    "teamSize",
+    "prizeMoney",
+    "managers",
+    "rounds"
   ]
 }

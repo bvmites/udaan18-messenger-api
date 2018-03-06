@@ -3,7 +3,8 @@ var router = express.Router();
 
 const eventSchema = require('../schema/event');
 const participantsSchema = require('../schema/participant');
-const promotionData = require('../schema/promotionData')
+const promotionData = require('../schema/promotionData');
+
 
 // /* GET home page. */
 // router.get('/', function(req, res) {
