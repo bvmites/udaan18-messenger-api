@@ -60,24 +60,24 @@
       }
     },
     "participants": {
-      "type":"array",
+      "type": "array",
       "items": {
-        "type":"object",
+        "type": "object",
         "properties": {
           "id": {
-            "type":"string",
+            "type": "string"
           },
-          "name":{
-            "type":"string"
+          "name": {
+            "type": "string"
           },
-          "phone":{
-            "type":"string",
+          "phone": {
+            "type": "string"
           },
           "round": {
-            "type":"number"
+            "type": "number"
           },
-          "status":{
-            "type":"string"
+          "status": {
+            "type": "string"
           }
         }
       }
