@@ -1,35 +1,42 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
-
-MongoClient.connect(process.env.DB);
+const dotenv = require('dotenv');
 
 const index = require('./api/events/index');
 const users = require('./api/users');
+const events = require('./api/events');
 
 const app = express();
 
 app.set('view engine', 'jade');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', index);
-app.use('/users', users);
+dotenv.config();
 
-app.use(function(req, res, next) {
-let err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+(async () => {
+    try {
+        const client = await MongoClient.connect(process.env.db);
+        const db = client.db('udaan18');
+        app.use('/', events(db));
 
-app.use(function(err, req, res, next) {
+        app.use(function (req, res, next) {
+            let err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
 
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+        app.use(function (err, req, res, next) {
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+            res.status(err.status || 500);
+        });
+    } catch (e) {
+        console.log('Cannot connect');
+        console.log(e);
+    }
+})();
 
-
-  res.status(err.status || 500);
-
-});
 
 module.exports = app;

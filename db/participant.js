@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectId;
 
-module.exports = (db) =>({
+module.exports = (db) => ({
     get: (eventId) => {
-    return db.collection('participations').find({_id: ObjectId(eventId)});
+        return db.collection('participations').find({eventId: ObjectId(eventId)}).toArray();
     }
 });
