@@ -4,7 +4,7 @@ module.exports = (db) => {
     const Event = require('../../db/event')(db);
     const Participant = require('../../db/participant')(db);
     // get event details
-    router.get('/events/:id', async (req, res) => {
+    router.get('/:id', async (req, res) => {
         try {
             const event = await Event.get(req.params.id);
             console.log(event);
@@ -19,7 +19,7 @@ module.exports = (db) => {
             res.status(500).json({message: 'event not found'});
         }
     });
-    router.get('/events/:eventId/participations', async (req, res) => {
+    router.get('/:eventId/participations', async (req, res) => {
         try {
             const participant = await Participant.get(req.params.eventId);
             if (participant != null) {

@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 
 const users = require('./api/users');
 const events = require('./api/events');
-
+const auth = require('./middleware/auth');
 const app = express();
 
 app.set('view engine', 'jade');
@@ -19,7 +19,7 @@ dotenv.config();
         const client = await MongoClient.connect(process.env.DB);
         const db = client.db('udaan18');
         const db2 = client.db('users');
-        app.use('/', events(db));
+        app.use('/events', auth, events(db));
         app.use('/users', users(db2));
         app.use(function (req, res, next) {
             let err = new Error('Not Found');
