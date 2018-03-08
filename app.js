@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const dotenv = require('dotenv');
 
-const index = require('./api/events/index');
 const users = require('./api/users');
 const events = require('./api/events');
 
@@ -17,10 +16,11 @@ dotenv.config();
 
 (async () => {
     try {
-        const client = await MongoClient.connect(process.env.db);
+        const client = await MongoClient.connect(process.env.DB);
         const db = client.db('udaan18');
+        const db2 = client.db('users');
         app.use('/', events(db));
-
+        app.use('/users', users(db2));
         app.use(function (req, res, next) {
             let err = new Error('Not Found');
             err.status = 404;
