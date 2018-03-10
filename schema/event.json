@@ -59,6 +59,9 @@
         "minLength": 1
       }
     },
+    "currentRound":{
+      "type": "number"
+    },
     "participants": {
       "type": "array",
       "items": {
@@ -93,6 +96,7 @@
     "teamSize",
     "prizeMoney",
     "managers",
-    "rounds"
+    "rounds",
+    "current_round"
   ]
 }

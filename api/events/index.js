@@ -8,6 +8,7 @@ module.exports = (db) => {
         try {
             const event = await Event.get(req.params.id);
             console.log(event);
+            console.log(event.currentRound);
             if (event != null) {
                 res.status(200).json(event);
             }
@@ -19,9 +20,33 @@ module.exports = (db) => {
             res.status(500).json({message: 'event not found'});
         }
     });
+    router.put('/:id', async (req, res) => {
+        try {
+            console.log(req.params.id);
+            const round = await Event.update(req.params.id);
+            if (round != null) {
+                res.status(200).json({message: 'round updated successfully'});
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    });
+    router.put('/:eventId/participations', async (req, res) => {
+        try {
+            const ids = req.body.ids;
+            for (let i = 0; i < ids.length; i++) {
+                const partround = await Participant.update(ids[i]);
+            }
+
+
+        } catch (e) {
+            console.log(e);
+        }
+    })
     router.get('/:eventId/participations', async (req, res) => {
         try {
             const participant = await Participant.get(req.params.eventId);
+            //console.log(current_round);
             if (participant != null) {
                 res.status(200).json(participant);
             }
