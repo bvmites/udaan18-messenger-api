@@ -4,7 +4,10 @@ module.exports = (db) => ({
     get: (eventId) => {
         return db.collection('participations').find({eventId: ObjectId(eventId)}).toArray();
     },
-    update: (id) => {
-        return db.collection('participations').updateOne({_id: ObjectId(id)}, {$inc: {round: 1}})
+    promoteNext: (eventId,ids) => {
+        const participantIds = ids.map(id => ObjectId(id));
+        console.log(participantIds);
+        console.log(eventId);
+        return db.collection('participations').updateMany({eventId: ObjectId(eventId),_id: {$in: participantIds}},{$inc: {round: 1}})
     }
 });

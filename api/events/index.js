@@ -33,20 +33,18 @@ module.exports = (db) => {
     });
     router.put('/:eventId/participations', async (req, res) => {
         try {
+            const eventId = req.params.eventId;
             const ids = req.body.ids;
-            for (let i = 0; i < ids.length; i++) {
-                const partround = await Participant.update(ids[i]);
-            }
-
+            const partround = await Participant.promoteNext(eventId, ids);
+            res.status(200).json({message: 'updated round'});
 
         } catch (e) {
-            console.log(e);
+            res.status(500).json({message: 'internal server error'});
         }
-    })
+    });
     router.get('/:eventId/participations', async (req, res) => {
         try {
             const participant = await Participant.get(req.params.eventId);
-            //console.log(current_round);
             if (participant != null) {
                 res.status(200).json(participant);
             }
@@ -55,7 +53,6 @@ module.exports = (db) => {
             }
         }
         catch (e) {
-            // res.status(401).json({message: 'Unauthorized, please check your login'})
             console.log(e);
             res.sendStatus(500);
         }
