@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const httpRequest = require('request-promise-native');
 module.exports = (db) => {
     const Event = require('../../db/event')(db);
     const Participant = require('../../db/participant')(db);
@@ -42,6 +42,40 @@ module.exports = (db) => {
             res.status(500).json({message: 'internal server error'});
         }
     });
+    router.put('/textlocal', async(req,res) => {
+        try {
+            const {number,status,customID,datetime} = req.body;
+            const getReceipt = await Participant.receipt(number,status,customID,datetime);
+            const updateStatus = await Participant.updateStatus(number,customID,status);
+            res.status(200).json({message:"got receipt and updated status"});
+        } catch (e) {
+            console.log(e);
+        }
+    });
+    /*router.post('/:eventId/participations', async (req,res) => {
+        try{
+            const {apiKey,username,hash,password,numbers,test,sender} = req.body;
+            const eventId = req.params.eventId;
+            const message = "testing...";
+            const reqBody = await httpRequest.post({
+                url:'http://api.textlocal.in/send',
+                form:{
+                    apiKey,
+                    username,
+                    hash,
+                    password,
+                    numbers,
+                    test,
+                    sender,
+                    custom:eventId,
+                    message
+                }});
+            console.log(reqBody);
+            }catch(e)
+            {
+                console.log(e);
+            }
+    });*/
     router.get('/:eventId/participations', async (req, res) => {
         try {
             const participant = await Participant.get(req.params.eventId);
