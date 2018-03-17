@@ -1,6 +1,11 @@
 const router = require('express').Router();
-const httpRequest = require('request-promise-native');
-module.exports = (db) => {
+
+//const httpRequest = require('request-promise-native');
+const socketClientList = [];
+module.exports = (db,io) => {
+    io.on('connection',function(socket){
+        socketClientList.push(socket);
+    });
     const Event = require('../../db/event')(db);
     const Participant = require('../../db/participant')(db);
     // get event details
@@ -47,6 +52,9 @@ module.exports = (db) => {
             const {number,status,customID,datetime} = req.body;
             const getReceipt = await Participant.receipt(number,status,customID,datetime);
             const updateStatus = await Participant.updateStatus(number,customID,status);
+            socketClientList.forEach(function(socket){
+                socket.emit('receipt',req.body);
+            })
             res.status(200).json({message:"got receipt and updated status"});
         } catch (e) {
             console.log(e);
