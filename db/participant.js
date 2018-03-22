@@ -4,10 +4,18 @@ module.exports = (db) => ({
     get: (eventId) => {
         return db.collection('participations').find({eventId: ObjectId(eventId)}).toArray();
     },
+    getContact: (eventId, ids) =>{
+        const participantIds = ids.map(id => ObjectId(id));
+        return db.collection('participations').find({eventId: ObjectId(eventId),_id: {$in: participantIds}}).project({phone: 1,_id: 0}).toArray();
+    },
+    getDetails: (eventId) =>{
+        return db.collection('events').findOne({_id: ObjectId(eventId)});
+            // .project({eventName: 1, currentRound: 1});
+    },
     promoteNext: (eventId, ids) => {
         const participantIds = ids.map(id => ObjectId(id));
-        console.log(participantIds);
-        console.log(eventId);
+        /*console.log(participantIds);
+        console.log(eventId);*/
         return db.collection('participations').updateMany({
             eventId: ObjectId(eventId),
             _id: {$in: participantIds}

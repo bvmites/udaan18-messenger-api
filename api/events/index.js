@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-//const httpRequest = require('request-promise-native');
+const httpRequest = require('request-promise-native');
 const socketClientList = [];
 module.exports = (db, io) => {
     io.on('connection', function (socket) {
@@ -39,37 +39,42 @@ module.exports = (db, io) => {
         try {
             const eventId = req.params.eventId;
             const ids = req.body.ids;
+            const date = req.body.date;
+            const time = req.body.time;
+            const place = req.body.place;
+            const mobileNums = await Participant.getContact(eventId, ids);
+            const eventDetails = await Participant.getDetails(eventId);
             const partround = await Participant.promoteNext(eventId, ids);
-            res.status(200).json({message: 'updated round'});
-
-        } catch (e) {
-            res.status(500).json({message: 'internal server error'});
-        }
-    });
-    /*router.post('/:eventId/participations', async (req,res) => {
-        try{
-            const {apiKey,username,hash,password,numbers,test,sender} = req.body;
-            const eventId = req.params.eventId;
-            const message = "testing...";
+            const eventName = eventDetails.eventName;
+            const round = eventDetails.currentRound;
+            const contacts = [];
+            Object.keys(mobileNums).forEach(function (key) {
+                const val = mobileNums[key]["phone"];
+                contacts.push(val);
+            });
+            const numbers = contacts.join(",");
+            const sender = process.env.SMS_SENDER;
+            const apiKey = process.env.SMS_API_KEY;
+            const test = process.env.SMS_TEST;
+            const message = "Dear Participant, Round " + (round + 1) + " of " + eventName + " is on " + date + " " + time + " at " + place + ". Kindly be present at the venue on time.";
             const reqBody = await httpRequest.post({
-                url:'http://api.textlocal.in/send',
-                form:{
+                url: 'http://api.textlocal.in/send',
+                form: {
                     apiKey,
-                    username,
-                    hash,
-                    password,
                     numbers,
                     test,
                     sender,
-                    custom:eventId,
+                    custom: eventId,
                     message
-                }});
+                }
+            });
+            res.status(200).json({message: 'updated round'});
             console.log(reqBody);
-            }catch(e)
-            {
-                console.log(e);
-            }
-    });*/
+        } catch (e) {
+            console.log(e);
+        }
+
+    });
     router.get('/:eventId/participations', async (req, res) => {
         try {
             const participant = await Participant.get(req.params.eventId);
