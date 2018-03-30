@@ -2,7 +2,7 @@ const router = require('express').Router();
 module.exports = (db, io) => {
     const Participant = require('../../db/participant')(db);
     router.post('/', async (req, res) => {
-        console.log('RECEIPT', req.body);
+        console.log('RECEIPT', JSON.stringify(req));
         try {
             const {number, status, customID, datetime} = req.body;
             const getReceipt = await Participant.receipt(number, status, customID, datetime);
