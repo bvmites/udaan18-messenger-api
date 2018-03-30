@@ -79,13 +79,13 @@ module.exports = (db, io) => {
                     receiptUrl: 'http://udaan18-messenger.herokuapp.com/textlocal'
                 }
             });
-            console.log('MESSAGE');
-            console.log(message);
             if (JSON.parse(apiResponse).status === 'success') {
+                await participantDb.resetDeliveryStatus(eventId, ids);
                 await participantDb.promoteNext(eventId, ids);
                 await eventDb.incrementRound(eventId);
                 res.status(200).json({message: 'Updated round'});
             } else {
+                console.log('MESSAGE', message);
                 console.log(apiResponse);
                 res.status(500).json({message: 'TextLocal API Error'});
             }

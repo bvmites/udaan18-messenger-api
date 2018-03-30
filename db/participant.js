@@ -18,6 +18,11 @@ module.exports = (db) => ({
         return db.collection('events')
             .findOne({_id: ObjectId(eventId)});
     },
+    resetDeliveryStatus: (eventId, ids) => {
+        const participantIds = ids.map(id => ObjectId(id));
+        return db.collection('participations')
+            .updateMany({_id: {$in: participantIds}}, {$set: {deliveryStatus: 'U'}});
+    },
     promoteNext: (eventId, ids) => {
         const participantIds = ids.map(id => ObjectId(id));
         return db.collection('participations').updateMany(
