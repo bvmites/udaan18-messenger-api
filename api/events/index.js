@@ -78,6 +78,8 @@ module.exports = (db, io) => {
                     message
                 }
             });
+            console.log('API RESPONSE');
+            console.log(apiResponse);
             if (JSON.parse(apiResponse).status === 'success') {
                 await participantDb.promoteNext(eventId, ids);
                 await eventDb.incrementRound(eventId);
