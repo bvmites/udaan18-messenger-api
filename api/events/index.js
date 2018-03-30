@@ -72,14 +72,14 @@ module.exports = (db, io) => {
                 form: {
                     apiKey,
                     numbers,
-                    test: true,
+                    test,
                     sender,
                     custom: eventId,
                     message
                 }
             });
-            console.log('API RESPONSE');
-            console.log(apiResponse);
+            console.log('MESSAGE');
+            console.log(message);
             if (JSON.parse(apiResponse).status === 'success') {
                 await participantDb.promoteNext(eventId, ids);
                 await eventDb.incrementRound(eventId);
