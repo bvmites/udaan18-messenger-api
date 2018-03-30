@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);

@@ -2,11 +2,11 @@ const router = require('express').Router();
 module.exports = (db, io) => {
     const Participant = require('../../db/participant')(db);
     router.post('/', async (req, res) => {
-        console.log('RECEIPT', JSON.stringify(req));
+        console.log('RECEIPT', req.body);
         try {
             const {number, status, customID, datetime} = req.body;
-            const getReceipt = await Participant.receipt(number, status, customID, datetime);
-            const updateStatus = await Participant.updateStatus(number, customID, status);
+            await Participant.receipt(number, status, customID, datetime);
+            await Participant.updateStatus(number, customID, status);
             io.emit('receipt', req.body);
             res.status(200).json({success: true});
         } catch (e) {
