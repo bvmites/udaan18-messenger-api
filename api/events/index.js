@@ -75,7 +75,8 @@ module.exports = (db, io) => {
                     test,
                     sender,
                     custom: eventId,
-                    message
+                    message,
+                    receiptUrl: 'http://udaan18-messenger.herokuapp.com/textlocal'
                 }
             });
             console.log('MESSAGE');
