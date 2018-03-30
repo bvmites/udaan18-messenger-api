@@ -37,7 +37,7 @@ module.exports = (db) => ({
         return db.collection('participations').updateOne(
             {
                 eventId: ObjectId(customID),
-                phone: '91' + number
+                phone: number.slice(2)
             },
             {$set: {deliveryStatus: status}}
         );
