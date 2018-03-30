@@ -49,9 +49,7 @@ paths:
         '200':
           description: A list of participants in the event.
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/participant"
+            "$ref": "#/definitions/participants"
         '401':
           description: Unauthorized. Likely due to a bad or expired token.
         '404':

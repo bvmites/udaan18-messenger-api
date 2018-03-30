@@ -7,6 +7,7 @@ module.exports = (db2) => {
     const User = require('../../db/user')(db2);
 
     // POST /users/create
+    // TODO disable
     router.post('/create', async (req, res) => {
         try {
             const {username, password} = req.body;
@@ -23,6 +24,7 @@ module.exports = (db2) => {
         try {
             const {username, password} = req.body;
             const result = await User.get(username);
+            // TODO fix throws and catches
             const error = new Error();
             if (!(username && password)) {
                 error.message = 'Invalid request';
@@ -39,7 +41,8 @@ module.exports = (db2) => {
             if (result.password.hash === hashPassword(password, result.password.salt, result.password.iterations)) {
                 const payload = {
                     user: {
-                        username
+                        username,
+                        eventId: result.eventId
                     }
                 };
                 const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME});
