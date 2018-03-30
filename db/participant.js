@@ -34,10 +34,10 @@ module.exports = (db) => ({
     },
     updateStatus: (number, customID, status) => {
         console.log({number, customID, status});
-        return db.collection('participations').updateMany(
+        return db.collection('participations').updateOne(
             {
                 eventId: ObjectId(customID),
-                phone: number
+                phone: '91' + number
             },
             {$set: {deliveryStatus: status}}
         );
