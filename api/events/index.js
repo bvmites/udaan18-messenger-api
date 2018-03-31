@@ -64,8 +64,8 @@ module.exports = (db, io) => {
             const round = eventDetails.currentRound;
 
             const numbers = mobileNums
-                .filter(num => num && num.length === 10)
                 .map(num => num.phone)
+                .filter(num => (num && num.length === 10))
                 .join(",");
             const sender = process.env.SMS_SENDER;
             const apiKey = process.env.SMS_API_KEY;
