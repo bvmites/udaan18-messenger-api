@@ -73,7 +73,7 @@ module.exports = (db, io) => {
 
             // TODO Default message
             const message = `Dear Participant, Round ${round + 1} of ${eventName} is on ${date} ${time} at ${venue}. Kindly be present at the venue on time.`;
-            const apiResponse = await httpRequest.post({
+            const apiRequest = {
                 url: 'http://api.textlocal.in/send',
                 form: {
                     apiKey,
@@ -84,6 +84,13 @@ module.exports = (db, io) => {
                     message,
                     receiptUrl: 'http://udaan18-messenger.herokuapp.com/textlocal'
                 }
+            };
+            const apiResponse = await httpRequest.post(apiRequest);
+            await db.collection('logs').insertOne({
+                request: req.body,
+                apiRequest,
+                apiResponse,
+                message
             });
             if (JSON.parse(apiResponse).status === 'success') {
                 await participantDb.resetDeliveryStatus(eventId, ids);
