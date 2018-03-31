@@ -78,7 +78,7 @@ module.exports = (db, io) => {
                 form: {
                     apiKey,
                     numbers,
-                    test: true,
+                    test,
                     sender,
                     custom: eventId,
                     message,
