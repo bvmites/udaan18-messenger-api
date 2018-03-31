@@ -1,6 +1,6 @@
 const router = require('express').Router();
-
 const httpRequest = require('request-promise-native');
+
 module.exports = (db, io) => {
 
     const eventDb = require('../../db/event')(db);
@@ -13,7 +13,7 @@ module.exports = (db, io) => {
             if (event != null) {
                 res.status(200).json({
                     ...event,
-                    isLastRound: event.currentRound >= event.rounds.length
+                    isLastRound: event.currentRound >= event.rounds
                 });
             }
             else {
@@ -50,17 +50,23 @@ module.exports = (db, io) => {
 
         try {
             // TODO validate promotion
-            // TODO check last round
             const eventId = req.params.eventId;
             const {ids, date, time, venue} = req.body;
 
             const mobileNums = await participantDb.getContact(eventId, ids);
             const eventDetails = await eventDb.get(eventId);
 
+            if (eventDetails.rounds.length <= eventDetails.currentRound) {
+                return res.status(400).json({message: 'Cannot promote further.'});
+            }
+
             const eventName = eventDetails.eventName;
             const round = eventDetails.currentRound;
 
-            const numbers = mobileNums.map(num => num.phone).join(",");
+            const numbers = mobileNums
+                .filter(num => num && num.length === 10)
+                .map(num => num.phone)
+                .join(",");
             const sender = process.env.SMS_SENDER;
             const apiKey = process.env.SMS_API_KEY;
             const test = process.env.SMS_TEST === 'true';
@@ -72,7 +78,7 @@ module.exports = (db, io) => {
                 form: {
                     apiKey,
                     numbers,
-                    test,
+                    test: true,
                     sender,
                     custom: eventId,
                     message,
@@ -100,8 +106,6 @@ module.exports = (db, io) => {
             const allParticipants = await participantDb.get(req.params.eventId);
             const event = await eventDb.get(req.params.eventId);
             const currentParticipants = allParticipants.filter(p => p.round === event.currentRound);
-            //TODO FIXME
-            //TODO Add filter for current round
             if (currentParticipants.length > 0) {
                 res.status(200).json(currentParticipants);
             }

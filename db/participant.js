@@ -38,7 +38,6 @@ module.exports = (db) => ({
             .insertOne({number, status, customID, datetime});
     },
     updateStatus: (number, customID, status) => {
-        console.log({number, customID, status});
         return db.collection('participations').updateOne(
             {
                 eventId: ObjectId(customID),
