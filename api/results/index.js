@@ -14,7 +14,7 @@ module.exports = (db) => {
         const result = [];
         for (let i = 0; i < rounds - 1; i++) {
             result.push({
-                round: i + 1,
+                round: `Round ${i + 1}`,
                 participants: participants.filter(p => p.round > i + 1).map(p => p.name)
             });
         }
