@@ -9,6 +9,7 @@ const users = require('./api/users');
 const events = require('./api/events');
 const textlocal = require('./api/textlocal');
 const auth = require('./middleware/auth');
+const results = require('./api/results');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -30,6 +31,7 @@ server.listen(port);
         app.use('/events', auth, events(db, io));
         app.use('/user', users(userDb));
         app.use('/textlocal', textlocal(db, io));
+        app.use('/results', results(db));
 
         app.use((req, res, next) => {
             let err = new Error('Not Found');
