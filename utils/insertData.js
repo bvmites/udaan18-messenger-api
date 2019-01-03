@@ -6,7 +6,7 @@ const parse = require('csv-parse/lib/sync');
 require('dotenv').config();
 const hashPassword = require('./hashPassword');
 
-const fileName = 'data/finalmanagers.csv';
+const fileName = 'data/test.csv';
 const data = fs.readFileSync(fileName);
 
 function readEventData(fileName) {
@@ -53,7 +53,7 @@ async function addEventToDatabase({eventName, rounds, phone, participants}, db, 
 const parsedData = parse(data).slice(1).map((row, i) => {
     let participants;
     try {
-        participants = readEventData(`data/participants/${row[4]}`);
+        participants = readEventData(`data/newMan/${row[4]}`);
     } catch (e) {
         console.log(e);
         console.log(`Check line ${i + 1}`);
@@ -70,7 +70,7 @@ const parsedData = parse(data).slice(1).map((row, i) => {
 });
 
 MongoClient.connect(process.env.DB).then(client => {
-    const db = client.db('udaan18');
+    const db = client.db('newTextLocal');
     const userDb = client.db('users');
     parsedData.forEach(async (event) => {
         await addEventToDatabase(event, db, userDb);
