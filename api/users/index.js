@@ -11,6 +11,7 @@ module.exports = (db2) => {
         try {
             const {username, password} = req.body;
             const result = await User.get(username);
+            console.log(result);
             // TODO fix throws and catches
             const error = new Error();
             if (!(username && password)) {
